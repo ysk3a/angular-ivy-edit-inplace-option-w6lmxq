@@ -1,0 +1,5 @@
+/* Add application styles & imports to this file! */
+.ng-dirty.ng-invalid {
+  border: 1px solid red;
+  outline: none;
+}

@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Admin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entity of entities; index as index">
+            <td style="width:50%">
+              <app-editable (update)="updateField(index, 'name')">
+                <ng-template viewMode>{{ entity.name }}</ng-template>
+                <ng-template editMode>
+                  <input [formControl]="getControl(index, 'name')" />
+                </ng-template>
+              </app-editable>
+              <button type="button" class="btn btn-info">Edit</button>
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="updateField(index, 'name')"
+              >
+                Save
+              </button>
+              <button type="button" class="btn btn-secondary">Canel</button>
+            </td>
+            <td style="width:50%">
+              <app-editable (update)="updateField(index, 'isAdmin')">
+                <ng-template viewMode>{{ entity.isAdmin }}</ng-template>
+                <ng-template editMode>
+                  <input
+                    type="checkbox"
+                    [formControl]="getControl(index, 'isAdmin')"
+                  />{{ entity.isAdmin }}
+                </ng-template>
+              </app-editable>
+              <button type="button" class="btn btn-info">Edit</button>
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="updateField(index, 'isAdmin')"
+              >
+                Save
+              </button>
+              <button type="button" class="btn btn-secondary">Canel</button>
+            </td>
+          </tr>
+          <!-- etc -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  --- Original Entities ---
+  <br />
+
+  <code>
+    {{ entities | json }}
+  </code>
+
+  <br />
+  <br />
+
+  --- ArrayForm Value ---
+
+  <br />
+  <code>{{ controls.value | json }}</code>
+</div>
