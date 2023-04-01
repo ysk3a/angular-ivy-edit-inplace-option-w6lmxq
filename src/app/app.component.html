@@ -14,10 +14,7 @@
               <app-editable (update)="updateField(index, 'name')">
                 <ng-template viewMode>{{ entity.name }}</ng-template>
                 <ng-template editMode>
-                  <input
-                    [formControl]="getControl(index, 'name')"
-                    focusable
-                    editableOnEnter />
+                  <input [formControl]="getControl(index, 'name')" focusable />
                 </ng-template>
               </app-editable>
             </td>
