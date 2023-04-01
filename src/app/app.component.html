@@ -14,23 +14,12 @@
               <app-editable (update)="updateField(index, 'name')">
                 <ng-template viewMode>{{ entity.name }}</ng-template>
                 <ng-template editMode>
-                  <textarea
-                    [formControl]="getControl(index, 'name')"></textarea>
+                  <input
+                    [formControl]="getControl(index, 'name')"
+                    focusable
+                    editableOnEnter />
                 </ng-template>
               </app-editable>
-              <!-- <button type="button" class="btn btn-info">Edit</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="updateField(index, 'name')">
-                Save
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="cancelChange(index, 'name')">
-                Canel
-              </button> -->
             </td>
             <td style="width:50%">
               <app-editable (update)="updateField(index, 'isAdmin')">
@@ -43,22 +32,8 @@
                   }}
                 </ng-template>
               </app-editable>
-              <!-- <button type="button" class="btn btn-info">Edit</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="updateField(index, 'isAdmin')">
-                Save
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="cancelChange(index, 'isAdmin')">
-                Canel
-              </button> -->
             </td>
           </tr>
-          <!-- etc -->
         </tbody>
       </table>
     </div>

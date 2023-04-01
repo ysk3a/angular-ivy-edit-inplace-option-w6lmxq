@@ -39,64 +39,21 @@ function makeRequest(timeToDelay: any) {
   templateUrl: "./editable.component.html",
   styleUrls: ["./editable.component.css"],
 })
-export class EditableComponent implements OnInit, AfterViewInit {
+export class EditableComponent implements OnInit {
   @ContentChild(ViewModeDirective) viewModeTpl!: ViewModeDirective;
   @ContentChild(EditModeDirective) editModeTpl!: EditModeDirective;
   @Output() update = new EventEmitter();
+
   editMode = new Subject();
   editMode$ = this.editMode.asObservable();
-
-  @ViewChild("editTwo") editTwoButtonRef!: ElementRef<HTMLButtonElement>;
-  @ViewChild("saveButtonRef") saveButtonRef!: ElementRef<HTMLButtonElement>;
-  editButtonClicks$!: Observable<any>;
-  saveButtonClick$!: Observable<any>;
 
   mode: "view" | "edit" = "view";
 
   constructor(private host: ElementRef) {}
-  ngAfterViewInit(): void {
-    this.editButtonClicks$ = fromEvent(
-      this.editTwoButtonRef.nativeElement,
-      "click"
-    );
-    this.editButtonClicks$.pipe(untilDestroyed(this)).subscribe(() => {
-      console.log("editObs");
-      this.mode = "edit";
-      this.editMode.next(true);
-    });
-
-    this.saveButtonClick$ = fromEvent(
-      this.saveButtonRef.nativeElement,
-      "click"
-    );
-    this.editMode$
-      .pipe(
-        switchMap(() => this.saveButtonClick$),
-        untilDestroyed(this)
-      )
-      .subscribe((event) => {
-        // other stuff at backend
-        console.log("editmode save");
-        this.toViewMode();
-      });
-
-      // other way?
-    // this.saveButtonClick$.pipe(untilDestroyed(this), take(1)).subscribe(() => {
-    //   console.log("saveObs");
-    //   // fake http delay
-    //   const source$ = of(4000, 3000, 2000);
-    //   const subscribe = source$.subscribe((val) => {
-    //     console.log(val);
-    //     this.mode = "view";
-    //     this.editMode.next(true);
-    //     this.toViewMode();
-    //   });
-    // });
-  }
 
   ngOnInit() {
-    // this.viewModeHandler();
-    // this.editModeHandler();
+    this.viewModeHandler();
+    this.editModeHandler();
   }
 
   toViewMode() {
@@ -104,25 +61,7 @@ export class EditableComponent implements OnInit, AfterViewInit {
     this.mode = "view";
   }
 
-  edit2(): void {
-    console.log("elref");
-    this.mode = "edit";
-    this.editMode.next(true);
-  }
-  save(): void {
-    console.log("save");
-    this.update.next("");
-    this.mode = "view";
-    this.editMode.next(true)
-  }
-  cancel(): void {
-    console.log("cancel");
-    this.mode = "view";
-    this.editMode.next(true)
-  }
-
   private get element() {
-    console.log("this.host.nativeElement", this.host.nativeElement);
     return this.host.nativeElement;
   }
 
@@ -130,7 +69,6 @@ export class EditableComponent implements OnInit, AfterViewInit {
     fromEvent(this.element, "dblclick")
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        console.log("dbclick");
         this.mode = "edit";
         this.editMode.next(true);
       });
@@ -151,7 +89,5 @@ export class EditableComponent implements OnInit, AfterViewInit {
     return this.mode === "view" ? this.viewModeTpl.tpl : this.editModeTpl.tpl;
   }
 
-  ngOnDestroy() {
-    this.editMode.unsubscribe();
-  }
+  ngOnDestroy() {}
 }
