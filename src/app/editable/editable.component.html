@@ -1,1 +1,16 @@
-<ng-container *ngTemplateOutlet="currentView"></ng-container>
+<!-- <ng-container *ngTemplateOutlet="currentView"></ng-container>
+<button type="button" class="btn btn-info" (click)="edit2()" #editTwo>
+  Edit2
+</button>
+<button type="button" class="btn btn-success" (click)="save()">Save</button>
+<button type="button" class="btn btn-secondary" (click)="cancel()">
+  Canel
+</button> -->
+
+<div style="border: 1px solid gray">
+  <ng-container *ngTemplateOutlet="currentView"></ng-container>
+  <br />
+  <button type="button" class="btn btn-info" #editTwo>Edit2</button>
+  <button type="button" class="btn btn-success" #saveButtonRef>Save</button>
+  <button type="button" class="btn btn-secondary">Canel</button>
+</div>
