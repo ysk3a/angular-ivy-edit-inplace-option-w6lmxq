@@ -8,25 +8,25 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   OnInit,
-} from '@angular/core';
+} from "@angular/core";
 
-import { NgControl } from '@angular/forms';
-import { fromEvent, Subject } from 'rxjs';
+import { NgControl } from "@angular/forms";
+import { fromEvent, Subject } from "rxjs";
 import {
   switchMap,
   takeUntil,
   filter,
   take,
   switchMapTo,
-} from 'rxjs/operators';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ViewModeDirective } from './view-mode.directive';
-import { EditModeDirective } from './edit-mode.directive';
+} from "rxjs/operators";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { ViewModeDirective } from "./view-mode.directive";
+import { EditModeDirective } from "./edit-mode.directive";
 @UntilDestroy()
 @Component({
-  selector: 'app-editable',
-  templateUrl: './editable.component.html',
-  styleUrls: ['./editable.component.css'],
+  selector: "app-editable",
+  templateUrl: "./editable.component.html",
+  styleUrls: ["./editable.component.css"],
 })
 export class EditableComponent implements OnInit {
   @ContentChild(ViewModeDirective) viewModeTpl!: ViewModeDirective;
@@ -36,7 +36,7 @@ export class EditableComponent implements OnInit {
   editMode = new Subject();
   editMode$ = this.editMode.asObservable();
 
-  mode: 'view' | 'edit' = 'view';
+  mode: "view" | "edit" = "view";
 
   constructor(private host: ElementRef) {}
 
@@ -46,19 +46,20 @@ export class EditableComponent implements OnInit {
   }
 
   toViewMode() {
-    this.update.next('');
-    this.mode = 'view';
+    this.update.next("");
+    this.mode = "view";
   }
 
   private get element() {
+    console.log("this.host.nativeElement", this.host.nativeElement);
     return this.host.nativeElement;
   }
 
   private viewModeHandler() {
-    fromEvent(this.element, 'dblclick')
+    fromEvent(this.element, "dblclick")
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        this.mode = 'edit';
+        this.mode = "edit";
         this.editMode.next(true);
       });
   }
@@ -75,7 +76,7 @@ export class EditableComponent implements OnInit {
   // }
 
   get currentView() {
-    return this.mode === 'view' ? this.viewModeTpl.tpl : this.editModeTpl.tpl;
+    return this.mode === "view" ? this.viewModeTpl.tpl : this.editModeTpl.tpl;
   }
 
   ngOnDestroy() {}

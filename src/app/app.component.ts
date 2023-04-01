@@ -1,15 +1,15 @@
-import { Component, VERSION } from '@angular/core';
-import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { Component, VERSION } from "@angular/core";
+import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'my-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "my-app",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  entities = [
-    { id: 1, name: 'Netanel Basal', isAdmin: true },
-    { id: 2, name: 'John Due', isAdmin: false },
+  entities: { [key: string]: string | number | boolean | Date }[] = [
+    { id: 1, name: "Netanel Basal", isAdmin: true },
+    { id: 2, name: "John Due", isAdmin: false },
   ];
 
   controls!: FormArray;
@@ -30,20 +30,38 @@ export class AppComponent {
   }
 
   cancelChange(index: number, field: string) {
-    console.log('cancelChange', index, field);
-    
-  }
-  updateField(index: number, field: string) {
     const control = this.getControl(index, field);
-    console.log('updateField', index, field, control.valid);
-
+    console.log("cancelChange", index, field);
     if (control.valid) {
       this.entities = this.entities.map((e, i) => {
         if (index === i) {
           return {
             ...e,
+            [field]:
+              e[
+                field as keyof {
+                  [key: string]: string | number | boolean | Date;
+                }
+              ],
+          };
+        }
+        return e;
+      });
+    }
+  }
+  updateField(index: number, field: string) {
+    const control = this.getControl(index, field);
+    console.log("updateField", index, field, control.valid);
+
+    if (control.valid) {
+      this.entities = this.entities.map((e, i) => {
+        if (index === i) {
+          let ret = {
+            ...e,
             [field]: control.value,
           };
+          console.log("entries loop", e, i, ret);
+          return ret;
         }
         return e;
       });
