@@ -11,30 +11,35 @@
         <tbody>
           <tr *ngFor="let entity of entities; index as index">
             <td style="width:50%">
-              <app-editable (update)="updateField(index, 'name')">
-                <ng-template viewMode>{{ entity.name }}</ng-template>
+              <app-editable (update)="updateField(index, 'name', entity.id)">
+                <ng-template viewMode>
+                  <span>{{ entity.name }}</span>
+                  <button type="button" class="btn btn-info">Edit</button>
+                </ng-template>
                 <ng-template editMode>
                   <textarea
                     [formControl]="getControl(index, 'name')"></textarea>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    (click)="updateField(index, 'name', entity.id)">
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="cancelChange(index, 'name')">
+                    Canel
+                  </button>
                 </ng-template>
               </app-editable>
-              <button type="button" class="btn btn-info">Edit</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="updateField(index, 'name')">
-                Save
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="cancelChange(index, 'name')">
-                Canel
-              </button>
             </td>
             <td style="width:50%">
-              <app-editable (update)="updateField(index, 'isAdmin')">
-                <ng-template viewMode>{{ entity.isAdmin }}</ng-template>
+              <app-editable (update)="updateField(index, 'isAdmin', entity.id)">
+                <ng-template viewMode>
+                  <span>{{ entity.isAdmin }}</span>
+                  <button type="button" class="btn btn-info">Edit</button>
+                </ng-template>
                 <ng-template editMode>
                   <input
                     type="checkbox"
@@ -43,19 +48,6 @@
                   }}
                 </ng-template>
               </app-editable>
-              <button type="button" class="btn btn-info">Edit</button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="updateField(index, 'isAdmin')">
-                Save
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="cancelChange(index, 'isAdmin')">
-                Canel
-              </button>
             </td>
           </tr>
           <!-- etc -->

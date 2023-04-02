@@ -42,8 +42,8 @@ function makeRequest(timeToDelay: any) {
 export class EditableComponent implements OnInit, AfterViewInit {
   @ContentChild(ViewModeDirective) viewModeTpl!: ViewModeDirective;
   @ContentChild(EditModeDirective) editModeTpl!: EditModeDirective;
-  @Output() update = new EventEmitter();
-  editMode = new Subject();
+  @Output() update = new EventEmitter<void>();
+  editMode = new Subject<void>();
   editMode$ = this.editMode.asObservable();
 
   // @ViewChild("editTwo") editTwoButtonRef!: ElementRef<HTMLButtonElement>;
@@ -102,29 +102,12 @@ export class EditableComponent implements OnInit, AfterViewInit {
   }
 
   toViewMode() {
-    this.update.next("");
+    this.update.next();
     this.mode = "view";
-  }
-
-  edit2(): void {
-    console.log("elref");
-    this.mode = "edit";
-    this.editMode.next(true);
-  }
-  save(): void {
-    console.log("save");
-    this.update.next("");
-    this.mode = "view";
-    this.editMode.next(true);
-  }
-  cancel(): void {
-    console.log("cancel");
-    this.mode = "view";
-    this.editMode.next(true);
   }
 
   private get element() {
-    console.log("this.host.nativeElement", this.host.nativeElement);
+    // console.log("this.host.nativeElement", this.host.nativeElement);
     return this.host.nativeElement;
   }
 
@@ -134,7 +117,7 @@ export class EditableComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         console.log("dbclick");
         this.mode = "edit";
-        this.editMode.next(true);
+        this.editMode.next();
       });
   }
 
@@ -145,11 +128,29 @@ export class EditableComponent implements OnInit, AfterViewInit {
     );
 
     this.editMode$
-      .pipe(switchMapTo(clickOutside$), untilDestroyed(this))
+      .pipe(
+        switchMap(() => clickOutside$),
+        untilDestroyed(this)
+      )
       .subscribe((event) => this.toViewMode());
   }
 
+  // private editModeHandler() {
+  //   const saveButtonClick$ = fromEvent(this.saveButtonRef.nativeElement,"click").pipe(take(1));
+
+  //   // const clickOutside$ = fromEvent(document, "click").pipe(
+  //   //   filter(({ target }) => this.element.contains(target) === false),
+  //   //   take(1)
+  //   // );
+
+  //   this.editMode$
+  //     .pipe(switchMap(() => saveButtonClick$), untilDestroyed(this))
+  //     .subscribe((event) => this.toViewMode());
+  // }
+
   get currentView() {
+    // let curView = this.mode === "view" ? this.viewModeTpl.tpl : this.editModeTpl.tpl;
+    // console.log(curView)
     return this.mode === "view" ? this.viewModeTpl.tpl : this.editModeTpl.tpl;
   }
 
