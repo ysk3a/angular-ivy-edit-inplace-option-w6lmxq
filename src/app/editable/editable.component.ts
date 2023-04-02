@@ -46,41 +46,43 @@ export class EditableComponent implements OnInit, AfterViewInit {
   editMode = new Subject();
   editMode$ = this.editMode.asObservable();
 
-  @ViewChild("editTwo") editTwoButtonRef!: ElementRef<HTMLButtonElement>;
-  @ViewChild("saveButtonRef") saveButtonRef!: ElementRef<HTMLButtonElement>;
-  editButtonClicks$!: Observable<any>;
-  saveButtonClick$!: Observable<any>;
+  // @ViewChild("editTwo") editTwoButtonRef!: ElementRef<HTMLButtonElement>;
+  // @ViewChild("saveButtonRef") saveButtonRef!: ElementRef<HTMLButtonElement>;
+  // editButtonClicks$!: Observable<any>;
+  // saveButtonClick$!: Observable<any>;
 
   mode: "view" | "edit" = "view";
 
   constructor(private host: ElementRef) {}
   ngAfterViewInit(): void {
-    this.editButtonClicks$ = fromEvent(
-      this.editTwoButtonRef.nativeElement,
-      "click"
-    );
-    this.editButtonClicks$.pipe(untilDestroyed(this)).subscribe(() => {
-      console.log("editObs");
-      this.mode = "edit";
-      this.editMode.next(true);
-    });
-
-    this.saveButtonClick$ = fromEvent(
-      this.saveButtonRef.nativeElement,
-      "click"
-    );
-    this.editMode$
-      .pipe(
-        switchMap(() => this.saveButtonClick$),
-        untilDestroyed(this)
-      )
-      .subscribe((event) => {
-        // other stuff at backend
-        console.log("editmode save");
-        this.toViewMode();
-      });
-
-      // other way?
+    // this.editButtonClicks$ = fromEvent(
+    //   this.editTwoButtonRef.nativeElement,
+    //   "click"
+    // );
+    // this.editButtonClicks$.pipe(untilDestroyed(this)).subscribe(() => {
+    //   console.log("editObs");
+    //   this.mode = "edit";
+    //   this.editMode.next(true);
+    // });
+    // this.saveButtonClick$ = fromEvent(
+    //   this.saveButtonRef.nativeElement,
+    //   "click"
+    // );
+    // this.saveButtonClick$.pipe(untilDestroyed(this)).subscribe(() => {
+    //   console.log("editmode save");
+    //   this.toViewMode();
+    // });
+    // this.editMode$
+    //   .pipe(
+    //     switchMap(() => this.saveButtonClick$),
+    //     untilDestroyed(this)
+    //   )
+    //   .subscribe((event) => {
+    //     // other stuff at backend
+    //     console.log("editmode save");
+    //     this.toViewMode();
+    //   });
+    // other way?
     // this.saveButtonClick$.pipe(untilDestroyed(this), take(1)).subscribe(() => {
     //   console.log("saveObs");
     //   // fake http delay
@@ -95,7 +97,7 @@ export class EditableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // this.viewModeHandler();
+    this.viewModeHandler();
     // this.editModeHandler();
   }
 
@@ -113,12 +115,12 @@ export class EditableComponent implements OnInit, AfterViewInit {
     console.log("save");
     this.update.next("");
     this.mode = "view";
-    this.editMode.next(true)
+    this.editMode.next(true);
   }
   cancel(): void {
     console.log("cancel");
     this.mode = "view";
-    this.editMode.next(true)
+    this.editMode.next(true);
   }
 
   private get element() {
